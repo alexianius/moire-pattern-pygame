@@ -134,7 +134,7 @@ def frejm():
 
 
 sat = pg.time.Clock() 
-kraj = kraj1 = False
+kraj = False
 
 reset()
 
