@@ -7,7 +7,7 @@ dim = (sirina, visina) = (720, 720)
 prozor = pg.display.set_mode(dim)
 
 animacija = 0
-br_animacija = 6
+br_animacija = 7
 
 d = 9 #debljina linija
 a = 28 #stranica kvadrata
@@ -15,6 +15,13 @@ a = 28 #stranica kvadrata
 a2 = 0. #stranica kvadrata druge mreze
 xk = 0. #polozaj kruga
 ugao = 0. #ugao rotacije
+
+pg.font.init()
+font = pg.font.SysFont(None, 60)
+tekst = []
+for i in range(br_animacija):
+    tekst.append(font.render(str(i+1) + '/' + str(br_animacija), False, pg.Color('grey')))
+
 
 def reset():
     global a2, ugao, xk
@@ -62,16 +69,27 @@ def crtaj2(): #2 mreze od kojih se jedna rotira
 
 def crtaj3(): #2 grupe koncentricnih krugova
     prozor.fill(pg.Color('white'))
-    r = 10
-    while( r <= visina/2 ):
-        pg.draw.circle(prozor, pg.Color('black'), (sirina//3, visina//2), r, 4)
-        pg.draw.circle(prozor, pg.Color('black'), (int(xk), visina//2), r, 4)
-        r+=10
+    r = 12
+    while( r <= visina/2 - 20 ):
+        pg.draw.circle(prozor, pg.Color('black'), (sirina//2, visina//2), r, 5)
+        pg.draw.circle(prozor, pg.Color('black'), (int(xk), visina//2), r, 5)
+        r+=12
 
-def crtaj4(): #2 grupe koncentricnih krugova
+def crtaj4():
     prozor.fill(pg.Color('white'))
-    r = visina/2
-    centar = (x, y) = (sirina//3, visina//2)
+    r = 11
+    while( r <= visina/2 - 20 ):
+        pg.draw.circle(prozor, pg.Color('black'), (sirina//2, visina//2), r, 5)
+        r+=11
+    r = 12
+    while( r <= visina/2 - 20 ):
+        pg.draw.circle(prozor, pg.Color('black'), (int(xk), visina//2), r, 5)
+        r+=12
+
+def crtaj5():
+    prozor.fill(pg.Color('white'))
+    r = visina/2 - 20
+    centar = (x, y) = (sirina//2, visina//2)
     for i in range(0,360,3):
         fi = math.radians(i)
         pg.draw.line(
@@ -100,22 +118,23 @@ def frejm():
         ugao += 0.001
         if(ugao >= math.pi/4):
             ugao = -math.pi/4
-    elif animacija == 4:
-        crtaj3()
+    elif animacija >= 4 and animacija <= 7:
+        if(animacija == 4):
+            crtaj3()
+        elif(animacija == 5):
+            crtaj4()
+        else:
+            crtaj5()
         xk -= 0.7
         if(xk <= -sirina/2):
             xk = visina * 1.5
-    elif animacija == 5:
-        crtaj4()
-        xk -= 0.7
-        if(xk <= -sirina/2):
-            xk = visina * 1.5
+    prozor.blit(tekst[animacija], (0,0))
     pg.display.update()
 
 
 
 sat = pg.time.Clock() 
-kraj = False
+kraj = kraj1 = False
 
 reset()
 
